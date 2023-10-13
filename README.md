@@ -112,7 +112,8 @@
      2
 
    ```
-1. Удалите контейнер с именем `pinger`   
+1. Удалите контейнер с именем `pinger`
+    
 ```
  vagrant@testing:~$ sudo docker stop pinger
  pinger
@@ -120,12 +121,48 @@
  pinger
 
 ```
+
 1. Удалите образ `busybox`
+   
    ```
       vagrant@testing:~$ sudo docker rmi busybox
    Untagged: busybox:latest
    Untagged: busybox@sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79
    Deleted: sha256:a416a98b71e224a31ee99cff8e16063554498227d2b696152a9c3e0aa65e5824
    Deleted: sha256:3d24ee258efc3bfe4066a1a9fb83febf6dc0b1548dfe896161533668281c9f4f
+
+   ```
+
+
+Задание 2 - Environment Variables
+
+Используя Docker CLI выполните следующие действия:
+1. Загрузите образ node версии 15.14
+   ```
+      vagrant@testing:~$ sudo docker pull node:15.14
+
+   ```
+1. Запустите контейнер node в интерактивном режиме подключения терминала, поименуйте его `mynode`, передайте две переменные среды `NAME=<ваше имя>` и `SURNAME=<ваша фамилия>`
+
+    ```
+      sudo docker run -it --name mynode -e NAME=Alexander -e SURNAME=Anisimov node:15.14
+     Welcome to Node.js v15.14.0.
+
+    ```
+1. В интерактивной среде выполнения node выполните скрипт, который выведет на экран приветсвтие: `Привет, <ваше имя> <ваша фамилия>!`, эти данные должны быть получены из переменных среды
+   ```
+      console.log('Привет, ' + process.env.NAME + ' ' + process.env.SURNAME + '!');
+       Привет, Alexander Anisimov!
+
+   ```
+1. Остановите контейнер
+   ```
+      vagrant@testing:~$ sudo docker stop mynode
+      mynode
+
+   ```
+1. Удалите образ node версии 15.14
+   ```
+      docker rmi node:15.14
 
    ```
