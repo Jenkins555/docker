@@ -166,3 +166,68 @@
       docker rmi node:15.14
 
    ```
+
+
+
+   ## Задание 3 - Volumes
+
+Используя Docker CLI выполните следующие действия:
+1. Загрузите образ node версии 15.14
+   ```
+      vagrant@testing:~$ sudo docker pull node:15.14
+
+   ```
+1. Запустите контейнер с именем `first_node` из образа node версии 15.14 в фоновом режиме, подключив папку `data` из текущей директории в `/var/first/data` контейнера
+   ```
+      vagrant@testing:~$ sudo docker run -d --name first_node -v "$(pwd)/data:/var/first/data" node:15.14 tail -f /dev/null
+     3cbdef52804e5685569dda52da463376dafd376bb21dd1ac9dcd9b08c95c9516
+
+
+   ```
+1. Запустите контейнер с именем `second_node` из образа node версии 15.14 в фоновом режиме, подключив папку `data` из текущей директории в `/var/second/data` контейнера
+   ```
+      vagrant@testing:~$ sudo docker run -d --name second_node -v "$(pwd)/data:/var/second/data" node:15.14 tail -f /dev/null
+      8728287d48c613eafe39cc6040f6300bf87cd8312581c3fb1a2b41c18c573aab
+
+
+   ```
+1. Подключитесь к контейнеру `first_node` с помощью exec и создайте текстовый файл любого содержания в `/var/first/data`
+   ```
+      vagrant@testing:~$ sudo docker exec -it first_node touch /var/first/data/myfile.txt
+
+   ```
+1. Добавьте еще один файл в папку `data` на хостовой машине
+   ```
+      vagrant@testing:~$ sudo touch data/myfile2.txt
+
+   ```
+1. Подключитесь к контейнеру `second_node` с помощью `exec` и получите список файлов в директории `/var/second/data`, выведете на экран содержимое файлов
+   ```
+      vagrant@testing:~$ sudo docker exec -it second_node ls /var/second/data
+       myfile.txt  myfile2.txt
+
+   ```
+   ```
+      vagrant@testing:~$ sudo docker exec -it second_node cat /var/second/data/myfile.txt
+
+   ```
+1. Остановите оба контейнера
+   ```
+      vagrant@testing:~$ sudo docker stop first_node second_node
+     first_node
+     second_node
+
+
+   ```
+1. Удалите оба контейнера
+   ```
+      vagrant@testing:~$ sudo docker rm first_node second_node
+      first_node
+      second_node
+
+   ```
+1. Удалите образ node версии 15.14
+   ```
+      vagrant@testing:~$ sudo docker rmi node:15.14
+
+   ```
